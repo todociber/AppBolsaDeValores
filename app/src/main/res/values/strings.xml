@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Bolsa De Valores</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="bolsaDeValoresElSalvador">Bolsa de Valores El Salvador</string>
+    <string name="iniciar_sesion">Iniciar Sesion</string>
+    <string name="title_activity_menu_principal">MenuPrincipal</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="bolsa_de_valores_sv">Bolsa de Valores SV</string>
+    <string name="casas_corredoras">Casas Corredoras</string>
+    <string name="afiliaciones">Afiliaciones</string>
+    <string name="perfil">Perfil</string>
+    <string name="configuracion">Configuracion</string>
+    <string name="urlApiBolsa">http://e60e591e.ngrok.io/</string>
+    <string name="urlSistemaASI">http://69.87.218.215/</string>
+    <string name="cerrar_session">Cerrar Session</string>
+    <string name="title_activity_ordenes_por_casa">Ordenes Por Casa</string>
+    <string name="title_activity_detalle_orden_principal">DetalleOrdenPrincipal</string>
+    <string name="correlativo_de_la_orden">Correlativo de la orden</string>
+    <string name="fecha_de_vigencia">Fecha de Vigencia</string>
+    <string name="agente_corredor">Agente Corredor:</string>
+    <string name="tipo_de_orden">Tipo de orden:</string>
+    <string name="titulo_de_inversion">Titulo de inversion:</string>
+    <string name="valor_minimo">Valor minimo:</string>
+    <string name="valor_m_ximo">Valor máximo:</string>
+    <string name="monto_de_inversion">Monto de inversion:</string>
+    <string name="tasa_de_interes">Tasa de Interes</string>
+    <string name="comision">Comision:</string>
+    <string name="cuenta_cedeval_asociada">Cuenta Cedeval asociada:</string>
+    <string name="emisor_del_titulo">Emisor del titulo:</string>
+    <string name="estado_de_la_orden">Estado de la Orden:</string>
+    <string name="ejecutar_orden">Ejecutar orden</string>
+    <string name="cancelar_orden">Cancelar Orden</string>
+    <string name="historial">Historial</string>
+    <string name="nueva_orden">Nueva Orden</string>
+    <string name="SeleccionarCasa">Seleccionar Casa Corredora</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_menu_principal2">MenuPrincipal2</string>
+    <string name="selecciona_una_cuenta_cedeval">Selecciona una cuenta Cedeval</string>
+    <string name="selecciona_una_casa_corredora">Selecciona una Casa Corredora</string>
+    <string name="selecciona_el_tipo_de_orden">Selecciona el tipo de Orden</string>
+    <string name="selecciona_el_tipo_de_mercado">Selecciona el tipo de Mercado</string>
+    <string name="selecciona_el_titulo_a_invertir">Selecciona el titulo a invertir</string>
+    <string name="continuar">Continuar</string>
+    <string name="compra">Compra</string>
+    <string name="venta">Venta</string>
+    <string name="title_activity_terminar_orden">Terminar Orden</string>
+    <string name="tasa_de_interes_titulo_seleccionado">Tasa de interes:</string>
+    <string name="emisor_del_titulo_nueva_orde">Emisor del Titulo:</string>
+    <string name="ingresa_el_valor_minimo_por_titulo">Ingresa el valor minimo por titulo:</string>
+    <string name="ingresa_el_valor_maximo_por_accion">ingresa el valor maximo por accion</string>
+    <string name="ingresa_el_monto_a_invertir">ingresa el monto a invertir</string>
+    <string name="selecciona_la_fecha_maxima_de_vigencia">Selecciona la fecha maxima de vigencia</string>
+    <string name="fecha_maxima">Fecha Maxima</string>
+    <string name="terminar">Terminar</string>
+    <string name="usuario">Usuario :</string>
+    <string name="tipo_mensaje">Tipo Mensaje:</string>
+    <string name="mensaje">Mensaje:</string>
+    <string name="enviar_mensaje">Enviar Mensaje</string>
+    <string name="ingresa_el_mensaje">Ingresa el mensaje</string>
+    <string name="comentar">Comentar</string>
+    <string name="valor_minimoE">Valor minimo</string>
+    <string name="valor_maximoe">Valor Maximo</string>
+    <string name="monto_a_invertir">Monto a invertir</string>
+    <string name="title_activity_historial_orden">HistorialOrden</string>
+</resources>

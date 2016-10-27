@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#016938</color>
+    <color name="colorPrimaryDark">#009541</color>
+    <color name="colorAccent">#D09C15</color>
+    <color name="verdeBolsaOscruco">#016938</color>
+    <color name="verdeBolsaClaro">#009541</color>
+    <color name="naranjaBolsa">#D09C15</color>
+    <color name="naranjaBolsaFondo">#B99C4A</color>
+    <color name="blanco">#ffffff</color>
+    <color name="negro">#000000</color>
+</resources>

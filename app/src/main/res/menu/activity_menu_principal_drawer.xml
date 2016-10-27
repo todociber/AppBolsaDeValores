@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/CasaCorredora"
+            android:icon="@drawable/home"
+            android:title="@string/casas_corredoras" />
+
+        <item
+            android:id="@+id/NuevaOrden"
+            android:icon="@drawable/plus"
+            android:title="@string/nueva_orden" />
+
+
+        <item
+            android:id="@+id/Afiliaciones"
+            android:icon="@drawable/afiliations"
+            android:title="@string/afiliaciones" />
+        <item
+            android:id="@+id/cerrarSession"
+            android:icon="@drawable/closesession"
+            android:title="@string/cerrar_session" />
+
+    </group>
+
+
+
+</menu>

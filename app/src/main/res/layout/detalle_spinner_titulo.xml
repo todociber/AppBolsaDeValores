@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rowCompras"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="-1dp"
+    android:orientation="horizontal"
+    >
+
+    <RelativeLayout
+        android:id="@+id/bannerPs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blanco"
+        >
+
+        <LinearLayout
+            android:id="@+id/thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:paddingBottom="2dp"
+
+            android:paddingTop="2dp" >
+
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/LogoCasa"
+                android:src="@drawable/home"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btnCate"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="4dip"
+            android:src="@drawable/donw_flecha" />
+
+        <TextView
+            android:textStyle="bold"
+            android:id="@+id/tituloNombre"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:layout_toLeftOf="@+id/btnCate"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:gravity="center_vertical"
+            android:text="CasaCorredora"
+            android:textColor="@color/negro"
+            android:textSize="15dip"
+
+            android:typeface="sans" />
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/verdeBolsaClaro">
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_below="@id/bannerPs"
+        android:layout_width="match_parent"
+        android:layout_height="1sp"
+        android:background="@color/verdeBolsaClaro">
+    </RelativeLayout>
+</RelativeLayout>

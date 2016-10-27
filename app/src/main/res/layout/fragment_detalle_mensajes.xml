@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blanco"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.todociber.appbolsadevalores.OrdenesCasa.fragments.DetalleMensajes">
+
+  <LinearLayout
+      android:layout_margin="15dp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:id="@+id/linearLayout">
+    <TextView
+        android:text="@string/enviar_mensaje"
+        android:textColor="@color/negro"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <EditText
+        android:id="@+id/txtMensajeEdit"
+        android:hint="@string/ingresa_el_mensaje"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <android.support.v7.widget.CardView
+        android:layout_gravity="center_horizontal"
+        app:cardBackgroundColor="@color/verdeBolsaOscruco"
+        android:id="@+id/btnEnviarMensaje"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+      <TextView
+          android:layout_margin="5sp"
+          android:textColor="@color/blanco"
+          android:text="@string/comentar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" />
+    </android.support.v7.widget.CardView>
+
+  </LinearLayout>
+
+  <ListView
+      android:id="@+id/ListadoMensajes"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_below="@+id/linearLayout">
+
+  </ListView>
+
+</RelativeLayout>

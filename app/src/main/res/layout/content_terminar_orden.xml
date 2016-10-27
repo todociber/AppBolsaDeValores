@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.todociber.appbolsadevalores.NuevaOrden.TerminarOrden"
+    tools:showIn="@layout/activity_terminar_orden">
+
+
+    <ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_weight="0.84"
+            android:textColor="@color/negro"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tasa_de_interes_titulo_seleccionado"
+            android:layout_alignTop="@+id/txtTasaDeInteres"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView" />
+        <TextView
+            android:textColor="@color/negro"
+            android:layout_weight="1"
+            android:id="@+id/txtTasaDeInteres"
+            android:text="0%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/textView"
+            android:layout_toEndOf="@+id/textView" />
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/negro"
+                android:textStyle="bold"
+                android:layout_weight="1"
+                android:text="@string/emisor_del_titulo_nueva_orde"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_weight="1"
+                android:textColor="@color/negro"
+                android:text="EMISOR 22"
+                android:id="@+id/txtEmisor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+    <TextView
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:textColor="@color/negro"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:text="@string/ingresa_el_valor_minimo_por_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:hint="@string/valor_minimoE"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/valorMinimo"
+         />
+
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/negro"
+        android:textStyle="bold"
+        android:text="@string/ingresa_el_valor_maximo_por_accion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:hint="@string/valor_maximoe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="2"
+        android:id="@+id/valorMaximo"
+         />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/negro"
+        android:textStyle="bold"
+        android:text="@string/ingresa_el_monto_a_invertir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:hint="@string/monto_a_invertir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/monto"
+         />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textColor="@color/negro"
+        android:textStyle="bold"
+        android:text="@string/selecciona_la_fecha_maxima_de_vigencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+
+        android:hint="@string/fecha_maxima"
+      android:inputType="date"
+        android:id="@+id/txtFechaDeVigencia"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/btnEnviarOrden"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        app:cardBackgroundColor="@color/verdeBolsaClaro"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:layout_margin="5sp"
+            android:text="@string/terminar"
+            android:textColor="@color/blanco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
+</ScrollView>
+</LinearLayout>
