@@ -55,6 +55,7 @@ public class DetalleOrden extends Fragment {
     public ProgressDialog loading;
     private OrdenesDao ordenesDao;
     private Context context;
+
     private String idOrden,motivo,idOrdenPadre;
     private GetOrdenesByCasa getOrdenesByCasa;
     public Cursor cursorDetalleOrden, CursorCliente;
