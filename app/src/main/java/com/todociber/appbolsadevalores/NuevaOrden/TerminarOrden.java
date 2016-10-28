@@ -236,9 +236,8 @@ public class TerminarOrden extends AppCompatActivity {
                     valorMaximoR = valorMaximo.getText().toString();
                     valorMinimoR = valorMinimo.getText().toString();
                     montoR = monto.getText().toString();
-                    if(validador()){
-                        new POSOrden().execute();
-                    }
+                    new POSOrden().execute();
+
 
 
                 }
@@ -257,7 +256,7 @@ public class TerminarOrden extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean validador(){
+    /*public boolean validador(){
         boolean sinErrore = true;
         String Error ="";
         if(valorMinimoR.equals(valorMaximoR)){
@@ -282,7 +281,7 @@ public class TerminarOrden extends AppCompatActivity {
                     }
                 }).create().show();
         return sinErrore;
-    }
+    }*/
 
     private class GetEmisor extends AsyncTask<Void, Void, Void> {
         int ErrorCode1=1,ErrorCode2=1,ErrorCode3=1,ErrorCode4=1;

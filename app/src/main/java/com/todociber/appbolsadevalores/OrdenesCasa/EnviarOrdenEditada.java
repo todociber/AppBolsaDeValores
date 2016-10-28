@@ -236,9 +236,8 @@ public class EnviarOrdenEditada extends AppCompatActivity {
                     valorMaximoR = valorMaximo.getText().toString();
                     valorMinimoR = valorMinimo.getText().toString();
                     montoR = monto.getText().toString();
-                    if(validador()){
-                        new PUTOrdenEditar().execute();
-                    }
+                    new PUTOrdenEditar().execute();
+
                 }
 
 
@@ -268,32 +267,7 @@ public class EnviarOrdenEditada extends AppCompatActivity {
         }
     }
 
-    public boolean validador(){
-        boolean sinErrore = true;
-        String Error ="";
-        if(valorMinimoR.equals(valorMaximoR)){
-            sinErrore = false;
-            Error ="valor minimo y máximo no pueden ser iguales";
-        }else if(valorMinimoR.equals("")|| valorMinimoR.equals("0")){
-            sinErrore = false;
-            Error = "Valor Minimo no es un valor valido";
-        }else if(valorMaximo.equals("")|| valorMaximo.equals("0")){
-            sinErrore = false;
-            Error = "Valor Maximo no es un valor valido";
-        }
 
-        new AlertDialog.Builder(context)
-                .setTitle("Error")
-                .setMessage(Error)
-                .setCancelable(false)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
-        return sinErrore;
-    }
 
     private class GetEmisor extends AsyncTask<Void, Void, Void> {
         int ErrorCode1=1,ErrorCode2=1,ErrorCode3=1,ErrorCode4=1;
