@@ -40,15 +40,21 @@ import com.todociber.appbolsadevalores.util.DecimalDigitsInputFilter;
 import java.util.Calendar;
 
 public class TerminarOrden extends AppCompatActivity {
+    public ProgressDialog loading;
+    protected int mYear;
+    protected int mMonth;
+    protected int mDay;
+    InputFilter timeFilter;
+    Calendar c, cMax, cMin;
+    DatePickerDialog.OnDateSetListener datePickerOnDateSetListener;
+    TimePickerDialog datePickerOnTimerSetListener;
+    int kilometraje, setday, setmonth, setyear, getDay, getMonth, getYear;
+    String fechaSelect;
+    String date,valorMinimoR,valorMaximoR,montoR;
     private  EditText fechaVigencia;
     private TitulosDao titulosDao;
     private EmisoresDao emisoresDao;
     private Context context;
-    InputFilter timeFilter;
-    protected int mYear;
-    protected int mMonth;
-    protected int mDay;
-    Calendar c, cMax, cMin;
     private SQLiteDatabase db;
     private DaoMaster daoMaster;
     private DaoSession daoSession;
@@ -56,12 +62,6 @@ public class TerminarOrden extends AppCompatActivity {
     private CedevalDao cedevalDao;
     private ClienteDao clienteDao;
     private CasasCorredorasDao casasCorredorasDao;
-    public ProgressDialog loading;
-    DatePickerDialog.OnDateSetListener datePickerOnDateSetListener;
-    TimePickerDialog datePickerOnTimerSetListener;
-    int kilometraje, setday, setmonth, setyear, getDay, getMonth, getYear;
-    String fechaSelect;
-    String date,valorMinimoR,valorMaximoR,montoR;
     private Cursor cursorCasaCorredora,cursorCedeval,cursorTitulo,cursorMercado,cursorEmisor,cursorCliente;
     private int posicionCursorCasa,posicionCursorCedeval,posicionCursorTitulo,posicionCursorMercado,posicionCursorTipoOrden;
     private TextView txtEmisor,txtTasaDeInteres;
@@ -221,27 +221,28 @@ public class TerminarOrden extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                cursorEmisor = db.query(emisoresDao.getTablename(),emisoresDao.getAllColumns(),null,null,null,null,null);
+                cursorTitulo = db.query(titulosDao.getTablename(),titulosDao.getAllColumns(),null,null,null,null,null);
+                cursorMercado = db.query(tipoMercadoDao.getTablename(),tipoMercadoDao.getAllColumns(),null,null,null,null,null);
+                cursorCedeval = db.query(cedevalDao.getTablename(),cedevalDao.getAllColumns(),null,null,null,null,null);
+                cursorCasaCorredora = db.query(casasCorredorasDao.getTablename(),casasCorredorasDao.getAllColumns(),null,null,null,null,null);
+                cursorCliente = db.query(clienteDao.getTablename(),clienteDao.getAllColumns(),null,null,null,null,null);
 
 
-                if(validador()){
-                    cursorEmisor = db.query(emisoresDao.getTablename(),emisoresDao.getAllColumns(),null,null,null,null,null);
-                    cursorTitulo = db.query(titulosDao.getTablename(),titulosDao.getAllColumns(),null,null,null,null,null);
-                    cursorMercado = db.query(tipoMercadoDao.getTablename(),tipoMercadoDao.getAllColumns(),null,null,null,null,null);
-                    cursorCedeval = db.query(cedevalDao.getTablename(),cedevalDao.getAllColumns(),null,null,null,null,null);
-                    cursorCasaCorredora = db.query(casasCorredorasDao.getTablename(),casasCorredorasDao.getAllColumns(),null,null,null,null,null);
-                    cursorCliente = db.query(clienteDao.getTablename(),clienteDao.getAllColumns(),null,null,null,null,null);
+                if(cursorTitulo.moveToPosition(posicionCursorTitulo)&& cursorMercado.moveToPosition(posicionCursorMercado)&&
+                        cursorCedeval.moveToPosition(posicionCursorCedeval)&& cursorCasaCorredora.moveToPosition(posicionCursorCasa)&& cursorCliente.moveToFirst()&& cursorEmisor.moveToFirst()
+                        ){
 
-
-                    if(cursorTitulo.moveToPosition(posicionCursorTitulo)&& cursorMercado.moveToPosition(posicionCursorMercado)&&
-                            cursorCedeval.moveToPosition(posicionCursorCedeval)&& cursorCasaCorredora.moveToPosition(posicionCursorCasa)&& cursorCliente.moveToFirst()&& cursorEmisor.moveToFirst()
-                            ){
-
-                        valorMaximoR = valorMaximo.getText().toString();
-                        valorMinimoR = valorMinimo.getText().toString();
-                        montoR = monto.getText().toString();
+                    valorMaximoR = valorMaximo.getText().toString();
+                    valorMinimoR = valorMinimo.getText().toString();
+                    montoR = monto.getText().toString();
+                    if(validador()){
                         new POSOrden().execute();
                     }
+
+
                 }
+
 
             }
         });
@@ -255,6 +256,34 @@ public class TerminarOrden extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public boolean validador(){
+        boolean sinErrore = true;
+        String Error ="";
+        if(valorMinimoR.equals(valorMaximoR)){
+            sinErrore = false;
+            Error ="valor minimo y máximo no pueden ser iguales";
+        }else if(valorMinimoR.equals("")|| valorMinimoR.equals("0")){
+            sinErrore = false;
+            Error = "Valor Minimo no es un valor valido";
+        }else if(valorMaximo.equals("")|| valorMaximo.equals("0")){
+            sinErrore = false;
+            Error = "Valor Maximo no es un valor valido";
+        }
+
+        new AlertDialog.Builder(context)
+                .setTitle("Error")
+                .setMessage(Error)
+                .setCancelable(false)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+        return sinErrore;
+    }
+
     private class GetEmisor extends AsyncTask<Void, Void, Void> {
         int ErrorCode1=1,ErrorCode2=1,ErrorCode3=1,ErrorCode4=1;
         public GetEmisor() {
@@ -380,33 +409,6 @@ public class TerminarOrden extends AppCompatActivity {
 
         }
 
-    }
-
-    public boolean validador(){
-        boolean sinErrore = true;
-        String Error ="";
-        if(valorMinimoR.equals(valorMaximoR)){
-            sinErrore = false;
-            Error ="valor minimo y máximo no pueden ser iguales";
-        }else if(valorMinimoR.equals("")|| valorMinimoR.equals("0")){
-            sinErrore = false;
-            Error = "Valor Minimo no es un valor valido";
-        }else if(valorMaximo.equals("")|| valorMaximo.equals("0")){
-            sinErrore = false;
-            Error = "Valor Maximo no es un valor valido";
-        }
-
-        new AlertDialog.Builder(context)
-                .setTitle("Error")
-                .setMessage(Error)
-                .setCancelable(false)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
-        return sinErrore;
     }
 
 }

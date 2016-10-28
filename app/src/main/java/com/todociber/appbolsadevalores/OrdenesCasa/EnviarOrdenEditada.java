@@ -41,15 +41,21 @@ import com.todociber.appbolsadevalores.util.DecimalDigitsInputFilter;
 import java.util.Calendar;
 
 public class EnviarOrdenEditada extends AppCompatActivity {
+    public ProgressDialog loading;
+    protected int mYear;
+    protected int mMonth;
+    protected int mDay;
+    InputFilter timeFilter;
+    Calendar c, cMax, cMin;
+    DatePickerDialog.OnDateSetListener datePickerOnDateSetListener;
+    TimePickerDialog datePickerOnTimerSetListener;
+    int kilometraje, setday, setmonth, setyear, getDay, getMonth, getYear;
+    String fechaSelect;
+    String date,valorMinimoR,valorMaximoR,montoR;
     private EditText fechaVigencia;
     private TitulosDao titulosDao;
     private EmisoresDao emisoresDao;
     private Context context;
-    InputFilter timeFilter;
-    protected int mYear;
-    protected int mMonth;
-    protected int mDay;
-    Calendar c, cMax, cMin;
     private SQLiteDatabase db;
     private  String idOrden;
     private DaoMaster daoMaster;
@@ -58,12 +64,6 @@ public class EnviarOrdenEditada extends AppCompatActivity {
     private CedevalDao cedevalDao;
     private ClienteDao clienteDao;
     private CasasCorredorasDao casasCorredorasDao;
-    public ProgressDialog loading;
-    DatePickerDialog.OnDateSetListener datePickerOnDateSetListener;
-    TimePickerDialog datePickerOnTimerSetListener;
-    int kilometraje, setday, setmonth, setyear, getDay, getMonth, getYear;
-    String fechaSelect;
-    String date,valorMinimoR,valorMaximoR,montoR;
     private OrdenesDao ordenesDao;
     private Cursor cursorCedeval,cursorTitulo,cursorMercado,cursorEmisor,cursorCliente,cursorOrden;
     private int posicionCursorCasa,posicionCursorCedeval,posicionCursorTitulo,posicionCursorMercado,posicionCursorTipoOrden;
@@ -229,19 +229,19 @@ public class EnviarOrdenEditada extends AppCompatActivity {
                 cursorMercado = db.query(tipoMercadoDao.getTablename(),tipoMercadoDao.getAllColumns(),null,null,null,null,null);
                 cursorCedeval = db.query(cedevalDao.getTablename(),cedevalDao.getAllColumns(),null,null,null,null,null);
                 cursorCliente = db.query(clienteDao.getTablename(),clienteDao.getAllColumns(),null,null,null,null,null);
-
-                System.out.print("ANTES DEL IF");
                 if(cursorTitulo.moveToPosition(posicionCursorTitulo)&& cursorMercado.moveToPosition(posicionCursorMercado)&&
                         cursorCedeval.moveToPosition(posicionCursorCedeval)&&  cursorCliente.moveToFirst()&& cursorEmisor.moveToFirst()
                         ){
-                    System.out.print("DENTRO DEL IF");
+
                     valorMaximoR = valorMaximo.getText().toString();
                     valorMinimoR = valorMinimo.getText().toString();
                     montoR = monto.getText().toString();
-                    new PUTOrdenEditar().execute();
-                }else{
-                    System.out.print("ERROR DE ID VALIDATOR CURSRES");
+                    if(validador()){
+                        new PUTOrdenEditar().execute();
+                    }
                 }
+
+
             }
         });
 
@@ -254,6 +254,47 @@ public class EnviarOrdenEditada extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setearValores(){
+        cursorOrden = db.query(ordenesDao.getTablename(),ordenesDao.getAllColumns(),"ID_ORDEN="+idOrden,null,null,null,null);
+        if(cursorOrden.moveToFirst()){
+            valorMinimo.setText(cursorOrden.getString(10));
+            valorMaximo.setText(cursorOrden.getString(11));
+            monto.setText(cursorOrden.getString(15));
+            String fecha= cursorOrden.getString(3);
+            fecha = fecha.replaceAll("-","/");
+            fechaVigencia.setText(fecha);
+            fechaSelect=fecha;
+        }
+    }
+
+    public boolean validador(){
+        boolean sinErrore = true;
+        String Error ="";
+        if(valorMinimoR.equals(valorMaximoR)){
+            sinErrore = false;
+            Error ="valor minimo y máximo no pueden ser iguales";
+        }else if(valorMinimoR.equals("")|| valorMinimoR.equals("0")){
+            sinErrore = false;
+            Error = "Valor Minimo no es un valor valido";
+        }else if(valorMaximo.equals("")|| valorMaximo.equals("0")){
+            sinErrore = false;
+            Error = "Valor Maximo no es un valor valido";
+        }
+
+        new AlertDialog.Builder(context)
+                .setTitle("Error")
+                .setMessage(Error)
+                .setCancelable(false)
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create().show();
+        return sinErrore;
+    }
+
     private class GetEmisor extends AsyncTask<Void, Void, Void> {
         int ErrorCode1=1,ErrorCode2=1,ErrorCode3=1,ErrorCode4=1;
         public GetEmisor() {
@@ -380,19 +421,5 @@ public class EnviarOrdenEditada extends AppCompatActivity {
 
         }
 
-    }
-
-
-    private void setearValores(){
-        cursorOrden = db.query(ordenesDao.getTablename(),ordenesDao.getAllColumns(),"ID_ORDEN="+idOrden,null,null,null,null);
-        if(cursorOrden.moveToFirst()){
-            valorMinimo.setText(cursorOrden.getString(10));
-            valorMaximo.setText(cursorOrden.getString(11));
-            monto.setText(cursorOrden.getString(15));
-            String fecha= cursorOrden.getString(3);
-            fecha = fecha.replaceAll("-","/");
-            fechaVigencia.setText(fecha);
-            fechaSelect=fecha;
-        }
     }
 }
