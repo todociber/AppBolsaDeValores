@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBar.TabListener;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.todociber.appbolsadevalores.OrdenesCasa.Adapter.TabOrdenDetalleAdapter;
@@ -22,6 +23,7 @@ public class TabOrdenDetalle extends ActionBarActivity implements TabListener {
     private ViewPager viewPager;
     private TabOrdenDetalleAdapter mAdapter;
     private String idCasa;
+    private String pantallaMostrar="0";
     private String[] tabs = { "Orden", "Mensajes", "Operaciones" };
 
     @Override
@@ -37,6 +39,12 @@ public class TabOrdenDetalle extends ActionBarActivity implements TabListener {
         Bundle extras = TabOrdenDetalle.this.getIntent().getExtras();
         posicionCursorCasa = extras.getInt("posicionCursor");
         idCasa = extras.getString("idCasa");
+        Log.d("posicionCursor",String.valueOf(posicionCursorCasa));
+        try{
+            pantallaMostrar = extras.getString("tipo");
+        }catch (Exception e ){
+            pantallaMostrar ="0";
+        }
         viewPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new TabOrdenDetalleAdapter(getSupportFragmentManager(),posicionCursorCasa,idCasa);
 
@@ -67,7 +75,16 @@ public class TabOrdenDetalle extends ActionBarActivity implements TabListener {
 
             }
         });
+        if(pantallaMostrar!=null){
+            if(pantallaMostrar.equals("1")){
+                getSupportActionBar().setSelectedNavigationItem(Integer.valueOf(0));
+            }else if(pantallaMostrar.equals("3")){
+                getSupportActionBar().setSelectedNavigationItem(Integer.valueOf(1));
+            }else if(pantallaMostrar.equals("4")){
+                getSupportActionBar().setSelectedNavigationItem(Integer.valueOf(2));
+            }
 
+        }
     }
 
 
