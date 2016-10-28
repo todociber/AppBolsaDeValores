@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
+
+        <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:textColor="@color/negro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/selecciona_una_cuenta_cedeval"
+                />
+            <Spinner
+                android:layout_marginTop="8dp"
+                android:id="@+id/SpinnerCuentaCedeval"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </Spinner>
+
+
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:textColor="@color/negro"
+                android:text="@string/selecciona_el_tipo_de_orden"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioGroup
+                android:id="@+id/TipoOrden"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/compra"
+                    android:checked="true"
+                    android:id="@+id/TipoCompra"
+                    />
+
+                <RadioButton
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/venta"
+                    android:id="@+id/TipoVenta"
+                    android:checked="false" />
+
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:textColor="@color/negro"
+                android:text="@string/selecciona_el_tipo_de_mercado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Spinner
+                android:layout_marginTop="8dp"
+                android:id="@+id/SpinnerTipoDeMercado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </Spinner>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:textColor="@color/negro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/selecciona_el_titulo_a_invertir"
+                />
+
+            <Spinner
+                android:layout_marginTop="8dp"
+                android:id="@+id/SpinnerTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+            </Spinner>
+
+            <android.support.v7.widget.CardView
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"
+                android:id="@+id/btnContinuar"
+                card_view:cardBackgroundColor="@color/verdeBolsaOscruco"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_margin="5sp"
+                    android:textColor="@color/blanco"
+                    android:text="@string/continuar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/sinConetido"
+        android:visibility="gone"
+        android:background="@color/blanco"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imagenSinContenido"
+            android:tint="@color/verdeBolsaOscruco"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/datos"
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

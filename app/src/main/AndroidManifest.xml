@@ -86,6 +86,14 @@
         <activity
             android:name=".OrdenesCasa.HistorialOrden"
             android:label="@string/title_activity_historial_orden"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OrdenesCasa.EditarOrden"
+            android:label="@string/title_activity_editar_orden"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".OrdenesCasa.EnviarOrdenEditada"
+            android:label="@string/title_activity_enviar_orden_editada"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

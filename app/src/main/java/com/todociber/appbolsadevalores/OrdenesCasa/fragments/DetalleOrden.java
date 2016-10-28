@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.todociber.appbolsadevalores.OrdenesCasa.EditarOrden;
 import com.todociber.appbolsadevalores.OrdenesCasa.HistorialOrden;
 import com.todociber.appbolsadevalores.OrdenesCasa.OrdenesPorCasa;
 import com.todociber.appbolsadevalores.OrdenesCasa.WS.GetOrdenesByCasa;
@@ -171,7 +172,15 @@ public class DetalleOrden extends Fragment {
                     cursorDetalleOrden.getString(7).equals("5")||
                     cursorDetalleOrden.getString(7).equals("7")||
                     cursorDetalleOrden.getString(7).equals("8")){
-                bannerBotones.setVisibility(View.GONE);
+
+                if (cursorDetalleOrden.getString(7).equals("1")){
+                    bannerBotones.setVisibility(View.VISIBLE);
+                    btnEjecutar.setVisibility(View.GONE);
+                    btnCancelar.setVisibility(View.GONE);
+                }else{
+                    bannerBotones.setVisibility(View.GONE);
+                }
+
             }
 
             if(cursorDetalleOrden.getString(6).equals("null")){
@@ -278,6 +287,15 @@ public class DetalleOrden extends Fragment {
             public void onClick(View v) {
                 Intent a = new Intent(getActivity(), HistorialOrden.class);
                 a.putExtra("idOrden",idOrdenPadre);
+                startActivity(a);
+            }
+        });
+
+        btnModificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent a = new Intent(getActivity(), EditarOrden.class);
+                a.putExtra("idOrden",idOrden);
                 startActivity(a);
             }
         });

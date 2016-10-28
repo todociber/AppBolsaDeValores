@@ -67,5 +67,7 @@
     <string name="valor_minimoE">Valor minimo</string>
     <string name="valor_maximoe">Valor Maximo</string>
     <string name="monto_a_invertir">Monto a invertir</string>
-    <string name="title_activity_historial_orden">HistorialOrden</string>
+    <string name="title_activity_historial_orden">Historial de la Orden</string>
+    <string name="title_activity_editar_orden">Editar Orden</string>
+    <string name="title_activity_enviar_orden_editada">Terminar edicion</string>
 </resources>

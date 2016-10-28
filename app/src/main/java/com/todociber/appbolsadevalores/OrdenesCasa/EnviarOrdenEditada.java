@@ -1,4 +1,4 @@
-package com.todociber.appbolsadevalores.NuevaOrden;
+package com.todociber.appbolsadevalores.OrdenesCasa;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -24,7 +24,7 @@ import android.widget.TextView;
 
 import com.todociber.appbolsadevalores.Home.MenuPrincipal;
 import com.todociber.appbolsadevalores.NuevaOrden.WS.GET_EmisorBolsaDeValores;
-import com.todociber.appbolsadevalores.NuevaOrden.WS.POST_NuevaOrden;
+import com.todociber.appbolsadevalores.OrdenesCasa.WS.PutModificarOrden;
 import com.todociber.appbolsadevalores.R;
 import com.todociber.appbolsadevalores.db.CasasCorredorasDao;
 import com.todociber.appbolsadevalores.db.CedevalDao;
@@ -32,6 +32,7 @@ import com.todociber.appbolsadevalores.db.ClienteDao;
 import com.todociber.appbolsadevalores.db.DaoMaster;
 import com.todociber.appbolsadevalores.db.DaoSession;
 import com.todociber.appbolsadevalores.db.EmisoresDao;
+import com.todociber.appbolsadevalores.db.OrdenesDao;
 import com.todociber.appbolsadevalores.db.TipoMercadoDao;
 import com.todociber.appbolsadevalores.db.TitulosDao;
 import com.todociber.appbolsadevalores.util.DatePickerDialogWithMaxMinRange;
@@ -39,8 +40,8 @@ import com.todociber.appbolsadevalores.util.DecimalDigitsInputFilter;
 
 import java.util.Calendar;
 
-public class TerminarOrden extends AppCompatActivity {
-    private  EditText fechaVigencia;
+public class EnviarOrdenEditada extends AppCompatActivity {
+    private EditText fechaVigencia;
     private TitulosDao titulosDao;
     private EmisoresDao emisoresDao;
     private Context context;
@@ -50,6 +51,7 @@ public class TerminarOrden extends AppCompatActivity {
     protected int mDay;
     Calendar c, cMax, cMin;
     private SQLiteDatabase db;
+    private  String idOrden;
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private TipoMercadoDao tipoMercadoDao;
@@ -62,7 +64,8 @@ public class TerminarOrden extends AppCompatActivity {
     int kilometraje, setday, setmonth, setyear, getDay, getMonth, getYear;
     String fechaSelect;
     String date,valorMinimoR,valorMaximoR,montoR;
-    private Cursor cursorCasaCorredora,cursorCedeval,cursorTitulo,cursorMercado,cursorEmisor,cursorCliente;
+    private OrdenesDao ordenesDao;
+    private Cursor cursorCedeval,cursorTitulo,cursorMercado,cursorEmisor,cursorCliente,cursorOrden;
     private int posicionCursorCasa,posicionCursorCedeval,posicionCursorTitulo,posicionCursorMercado,posicionCursorTipoOrden;
     private TextView txtEmisor,txtTasaDeInteres;
     private EditText valorMinimo,valorMaximo,monto,fechaDeVigencia;
@@ -70,14 +73,13 @@ public class TerminarOrden extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_terminar_orden);
+        setContentView(R.layout.activity_enviar_orden_editada);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        context = TerminarOrden.this;
+        context = EnviarOrdenEditada.this;
         c = Calendar.getInstance();
 
         cMin = Calendar.getInstance();
@@ -106,12 +108,14 @@ public class TerminarOrden extends AppCompatActivity {
         tipoMercadoDao = daoSession.getTipoMercadoDao();
         casasCorredorasDao = daoSession.getCasasCorredorasDao();
         clienteDao = daoSession.getClienteDao();
-        Bundle extras = TerminarOrden.this.getIntent().getExtras();
-        posicionCursorCasa = extras.getInt("posicionCursorCasa");
+        ordenesDao = daoSession.getOrdenesDao();
+        Bundle extras = EnviarOrdenEditada.this.getIntent().getExtras();
+
         posicionCursorCedeval = extras.getInt("posicionCursorCedeval");
         posicionCursorTitulo = extras.getInt("posicionCursorTitulo");
         posicionCursorMercado = extras.getInt("posicionCursorMercado");
         posicionCursorTipoOrden = extras.getInt("posicionTipoOrden");
+        idOrden = extras.getString("idOrden");
 
         cursorTitulo = db.query(titulosDao.getTablename(),titulosDao.getAllColumns(),null,null,null,null,null,null);
         if (cursorTitulo.moveToPosition(posicionCursorTitulo)){
@@ -220,29 +224,24 @@ public class TerminarOrden extends AppCompatActivity {
         EnviarOrden.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cursorEmisor = db.query(emisoresDao.getTablename(),emisoresDao.getAllColumns(),null,null,null,null,null);
+                cursorTitulo = db.query(titulosDao.getTablename(),titulosDao.getAllColumns(),null,null,null,null,null);
+                cursorMercado = db.query(tipoMercadoDao.getTablename(),tipoMercadoDao.getAllColumns(),null,null,null,null,null);
+                cursorCedeval = db.query(cedevalDao.getTablename(),cedevalDao.getAllColumns(),null,null,null,null,null);
+                cursorCliente = db.query(clienteDao.getTablename(),clienteDao.getAllColumns(),null,null,null,null,null);
 
-
-
-                if(validador()){
-                    cursorEmisor = db.query(emisoresDao.getTablename(),emisoresDao.getAllColumns(),null,null,null,null,null);
-                    cursorTitulo = db.query(titulosDao.getTablename(),titulosDao.getAllColumns(),null,null,null,null,null);
-                    cursorMercado = db.query(tipoMercadoDao.getTablename(),tipoMercadoDao.getAllColumns(),null,null,null,null,null);
-                    cursorCedeval = db.query(cedevalDao.getTablename(),cedevalDao.getAllColumns(),null,null,null,null,null);
-                    cursorCasaCorredora = db.query(casasCorredorasDao.getTablename(),casasCorredorasDao.getAllColumns(),null,null,null,null,null);
-                    cursorCliente = db.query(clienteDao.getTablename(),clienteDao.getAllColumns(),null,null,null,null,null);
-
-
-                    if(cursorTitulo.moveToPosition(posicionCursorTitulo)&& cursorMercado.moveToPosition(posicionCursorMercado)&&
-                            cursorCedeval.moveToPosition(posicionCursorCedeval)&& cursorCasaCorredora.moveToPosition(posicionCursorCasa)&& cursorCliente.moveToFirst()&& cursorEmisor.moveToFirst()
-                            ){
-
-                        valorMaximoR = valorMaximo.getText().toString();
-                        valorMinimoR = valorMinimo.getText().toString();
-                        montoR = monto.getText().toString();
-                        new POSOrden().execute();
-                    }
+                System.out.print("ANTES DEL IF");
+                if(cursorTitulo.moveToPosition(posicionCursorTitulo)&& cursorMercado.moveToPosition(posicionCursorMercado)&&
+                        cursorCedeval.moveToPosition(posicionCursorCedeval)&&  cursorCliente.moveToFirst()&& cursorEmisor.moveToFirst()
+                        ){
+                    System.out.print("DENTRO DEL IF");
+                    valorMaximoR = valorMaximo.getText().toString();
+                    valorMinimoR = valorMinimo.getText().toString();
+                    montoR = monto.getText().toString();
+                    new PUTOrdenEditar().execute();
+                }else{
+                    System.out.print("ERROR DE ID VALIDATOR CURSRES");
                 }
-
             }
         });
 
@@ -297,6 +296,7 @@ public class TerminarOrden extends AppCompatActivity {
                 if(cursorEmisor.moveToFirst()){
                     txtEmisor.setText(cursorEmisor.getString(2));
                 }
+                setearValores();
             }
 
 
@@ -307,10 +307,10 @@ public class TerminarOrden extends AppCompatActivity {
 
     }
 
-    private class POSOrden extends AsyncTask<Void, Void, Void> {
+    private class PUTOrdenEditar extends AsyncTask<Void, Void, Void> {
         int ErrorCode1=1,ErrorCode2=1,ErrorCode3=1,ErrorCode4=1;
         String msg;
-        public POSOrden() {
+        public PUTOrdenEditar() {
 
         }
 
@@ -330,10 +330,10 @@ public class TerminarOrden extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... arg0) {
             if(cursorTitulo.moveToPosition(posicionCursorTitulo)){
-                POST_NuevaOrden post_nuevaOrden = new POST_NuevaOrden(cursorCedeval.getString(1),cursorCasaCorredora.getString(1),cursorCliente.getString(5),String.valueOf(posicionCursorTipoOrden),cursorCliente.getString(2),cursorMercado.getString(2),
+                PutModificarOrden putModificarOrden = new PutModificarOrden(cursorCedeval.getString(1),idOrden,cursorCliente.getString(5),String.valueOf(posicionCursorTipoOrden),cursorCliente.getString(2),cursorCliente.getString(3),cursorMercado.getString(2),
                         cursorTitulo.getString(2),cursorEmisor.getString(2),valorMaximoR,valorMinimoR,montoR,fechaSelect,cursorTitulo.getString(3),cursorCliente.getString(9),context);
-                ErrorCode1 = post_nuevaOrden.error;
-                msg = post_nuevaOrden.msg;
+                ErrorCode1 = putModificarOrden.error;
+                msg = putModificarOrden.msg;
             }
 
             return null;
@@ -347,7 +347,7 @@ public class TerminarOrden extends AppCompatActivity {
             if(ErrorCode1==0){
                 new AlertDialog.Builder(context)
                         .setTitle("Error")
-                        .setMessage("Orden Creada con exito")
+                        .setMessage("Orden editada con exito")
                         .setCancelable(false)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                             @Override
@@ -382,31 +382,17 @@ public class TerminarOrden extends AppCompatActivity {
 
     }
 
-    public boolean validador(){
-        boolean sinErrore = true;
-        String Error ="";
-        if(valorMinimoR.equals(valorMaximoR)){
-            sinErrore = false;
-            Error ="valor minimo y máximo no pueden ser iguales";
-        }else if(valorMinimoR.equals("")|| valorMinimoR.equals("0")){
-            sinErrore = false;
-            Error = "Valor Minimo no es un valor valido";
-        }else if(valorMaximo.equals("")|| valorMaximo.equals("0")){
-            sinErrore = false;
-            Error = "Valor Maximo no es un valor valido";
+
+    private void setearValores(){
+        cursorOrden = db.query(ordenesDao.getTablename(),ordenesDao.getAllColumns(),"ID_ORDEN="+idOrden,null,null,null,null);
+        if(cursorOrden.moveToFirst()){
+            valorMinimo.setText(cursorOrden.getString(10));
+            valorMaximo.setText(cursorOrden.getString(11));
+            monto.setText(cursorOrden.getString(15));
+            String fecha= cursorOrden.getString(3);
+            fecha = fecha.replaceAll("-","/");
+            fechaVigencia.setText(fecha);
+            fechaSelect=fecha;
         }
-
-        new AlertDialog.Builder(context)
-                .setTitle("Error")
-                .setMessage(Error)
-                .setCancelable(false)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create().show();
-        return sinErrore;
     }
-
 }
