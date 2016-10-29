@@ -15,8 +15,10 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gcm.GCMBaseIntentService;
+import com.todociber.appbolsadevalores.Home.MenuPrincipal;
 import com.todociber.appbolsadevalores.OrdenesCasa.TabOrdenDetalle;
 import com.todociber.appbolsadevalores.OrdenesCasa.WS.GetOrdenesByCasa;
+import com.todociber.appbolsadevalores.db.AfiliacionesDao;
 import com.todociber.appbolsadevalores.db.ClienteDao;
 import com.todociber.appbolsadevalores.db.DaoMaster;
 import com.todociber.appbolsadevalores.db.DaoSession;
@@ -56,6 +58,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     //DaoAccessPush daoAccessPush;
     private ClienteDao clienteDao;
     private OrdenesDao ordenesDao;
+    private AfiliacionesDao afiliacionesDao;
     private Cursor cursorCliente,cursorOrden,cursorOrdenes;
     private Cursor cursor1;
     private int indicator;
@@ -157,7 +160,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         daoSession = daoMaster.newSession();
         tokenPushDao = daoSession.getTokenPushDao();
         clienteDao = daoSession.getClienteDao();
-
+        afiliacionesDao = daoSession.getAfiliacionesDao();
         ordenesDao = daoSession.getOrdenesDao();
         cursorCliente = db.query(clienteDao.getTablename(),clienteDao.getAllColumns(),null,null,null,null,null);
 
@@ -166,6 +169,32 @@ public class GCMIntentService extends GCMBaseIntentService {
             if(cursorCliente.moveToFirst()){
                 new getOrdenes(context,cursorCliente.getString(9),cursorCliente.getString(5),idOrganizacion,mensaje,idOrden, tipo).execute();
             }
+
+        }else if(tipo.equals("2")){
+            intent = new Intent(context, MenuPrincipal.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+            intent.putExtra("afliacionCode","2");
+            PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            Notification notification = new NotificationCompat.Builder(context)
+                    .setSmallIcon(getNotificationIcon()).setTicker("Bolsa de Valores")
+                    .setWhen(System.currentTimeMillis()).setContentTitle("Bolsa de Valores")
+                    .setContentText(mensaje)
+                    .setContentIntent(pIntent)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(""))
+                    .getNotification();
+            // Remove the notification on click
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
+            notification.defaults |= Notification.DEFAULT_SOUND;
+            notification.defaults |= Notification.PRIORITY_MAX;
+            notification.defaults |= Notification.DEFAULT_VIBRATE;
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.notify(0, notification);
 
         }
 
@@ -207,52 +236,6 @@ public class GCMIntentService extends GCMBaseIntentService {
         return useWhiteIcon ? R.drawable.home : R.drawable.home;
     }
 
-    private class PutDataTask extends AsyncTask<Void, Void, Void> {
-
-        int resultado;
-        String token, deviceId;
-        Context context;
-
-        public PutDataTask(Context context, String token, String deviceId) {
-            this.token = token;
-            this.context = context;
-            this.deviceId = deviceId;
-        }
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) { // TODO
-            //   Auto - generated method stub;
-
-
-            String id = Settings.Secure.getString(context.getContentResolver(),
-                    Settings.Secure.ANDROID_ID);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-            if (resultado == 1) {
-                Intent i = getBaseContext().getPackageManager()
-                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-
-                startActivity(i);
-
-            } else if (resultado == 2) {
-
-            } else {
-
-            }
-        }
-
-    }
 
     private class getOrdenes extends AsyncTask<Void, Void, Void> {
         int ErrorCode;
@@ -310,6 +293,10 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 
             intent = new Intent(context, TabOrdenDetalle.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             intent.putExtra("posicionCursor", posicionCursor);
             intent.putExtra("idCasa", idOrganizacion);
             intent.putExtra("tipo", tipo);
@@ -342,5 +329,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         }
 
     }
+
+
 
 }
