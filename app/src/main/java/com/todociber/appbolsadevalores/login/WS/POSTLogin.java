@@ -1,6 +1,7 @@
 package com.todociber.appbolsadevalores.login.WS;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.todociber.appbolsadevalores.R;
 
@@ -29,11 +30,10 @@ import java.io.UnsupportedEncodingException;
 public class POSTLogin {
 
 
-    BufferedReader in = null;
-
     public int  error,erroCode;
     public String Email,Password,TokenPush;
     public Context context;
+    BufferedReader in = null;
 
     public POSTLogin(String Email, String Password, String TokenPush,Context context){
         this.Email = Email;
@@ -73,6 +73,7 @@ public class POSTLogin {
             in.close();
             String page = sb.toString();
             JSONObject jsonObject = new JSONObject(page);
+            Log.d("json",jsonObject.toString());
             error = jsonObject.getInt("ErrorCode");
             if (error ==0){
                ProcesarJsonLogin procesarJsonLogin = new ProcesarJsonLogin(jsonObject,context);

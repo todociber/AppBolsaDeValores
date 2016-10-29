@@ -130,15 +130,27 @@ public class GCMIntentService extends GCMBaseIntentService {
     @SuppressLint("NewApi")
     @Override
     protected void onMessage(Context context, Intent data) {
-        String titulo = null, tipo, idOrden,idOrganizacion, mensaje;
+        String titulo = null, tipo="0", idOrden="46",idOrganizacion="2", mensaje;
         mensaje ="";
         // Message from PHP server
+        Log.d("data",data.toString());
         if(data.hasExtra("mensaje")){
             mensaje = data.getStringExtra("mensaje");
         }
-        tipo   = data.getStringExtra("tipo");
-        idOrden = data.getStringExtra("idOrden");
-        idOrganizacion = data.getStringExtra("idOrganizacion");
+        if(data.hasExtra("tipo")){
+            tipo   = data.getStringExtra("tipo");
+        }if(data.hasExtra("idOrden")){
+            idOrden = data.getStringExtra("idOrden");
+        }if(data.hasExtra("idOrganizacion")){
+            idOrganizacion = data.getStringExtra("idOrganizacion");
+        }
+
+        Log.d("mensaje",mensaje);
+        Log.d("tipo",tipo);
+        Log.d("idOrden",idOrden);
+        Log.d("idOrganizacion",idOrganizacion);
+
+
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "bolsaDeValoresSV", null);
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);

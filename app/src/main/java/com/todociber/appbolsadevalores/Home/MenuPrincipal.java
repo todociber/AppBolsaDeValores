@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
+import com.todociber.appbolsadevalores.Afiliaciones.AfiliacionesPendientes;
 import com.todociber.appbolsadevalores.Home.WS.GETCasasCorredoras;
 import com.todociber.appbolsadevalores.Home.adapter.ListadoCasasAdapter;
 import com.todociber.appbolsadevalores.NuevaOrden.SeleccionarCasa;
@@ -38,15 +39,15 @@ import com.todociber.appbolsadevalores.login.MainActivity;
 
 public class MenuPrincipal extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    public Context context;
+    public  Cursor CursorCliete,CursorCasas;
+    public ListView ListadoCasas;
+    public ListadoCasasAdapter CasasAdapter;
     private SQLiteDatabase db;
     private DaoMaster daoMaster;
     private DaoSession daoSession;
     private TokenPushDao tokenPushDao;
     private ClienteDao clienteDao;
-    public Context context;
-    public  Cursor CursorCliete,CursorCasas;
-    public ListView ListadoCasas;
-    public ListadoCasasAdapter CasasAdapter;
     private SwipeRefreshLayout swipeContainer;
     private RelativeLayout content_frame;
     private GETCasasCorredoras getOrdenesByCasa;
@@ -161,7 +162,7 @@ public class MenuPrincipal extends AppCompatActivity
             content_frame.setVisibility(View.GONE);
             swipeContainer.setVisibility(View.VISIBLE);
         } else if (id == R.id.Afiliaciones) {
-
+            displayView(2);
         } else if(id == R.id.NuevaOrden){
             displayView(1);
         }else if (id == R.id.cerrarSession) {
@@ -189,12 +190,14 @@ public class MenuPrincipal extends AppCompatActivity
             case 1:
                 swipeContainer.setVisibility(View.GONE);
                 content_frame.setVisibility(View.VISIBLE);
-                System.out.print("NUEVAS ORDEN PRESIONADO");
                 fragment = new SeleccionarCasa();
                 title = getString(R.string.SeleccionarCasa);
                 break;
             case 2:
-
+                swipeContainer.setVisibility(View.GONE);
+                content_frame.setVisibility(View.GONE);
+                fragment = new AfiliacionesPendientes();
+                title = "Afiliaciones Pendientes";
                 break;
             case 3:
 

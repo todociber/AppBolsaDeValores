@@ -8,7 +8,7 @@ public class Main {
 
 
     public  static void main(String[] args) throws Exception {
-        Schema schema = new Schema(2, "com.todociber.appbolsadevalores.db");
+        Schema schema = new Schema(3, "com.todociber.appbolsadevalores.db");
         schema.enableKeepSectionsByDefault();
         createDataBase(schema);
         DaoGenerator generador = new DaoGenerator();
@@ -129,7 +129,11 @@ public class Main {
         OperacionesBolsa.addStringProperty("idOrden");//3
 
 
-
+        Entity Afiliaciones = schema.addEntity("Afiliaciones");
+        Afiliaciones.addIdProperty();
+        Afiliaciones.addStringProperty("numeroAfiliacion");//1
+        Afiliaciones.addStringProperty("nombreCasa");//2
+        Afiliaciones.addStringProperty("estadoAfiliacion");//3
 
 
 
