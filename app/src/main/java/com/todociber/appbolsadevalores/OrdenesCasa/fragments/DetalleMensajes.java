@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.todociber.appbolsadevalores.OrdenesCasa.Adapter.AdapterMensajes;
+import com.todociber.appbolsadevalores.OrdenesCasa.WS.GetOrdenesByCasa;
 import com.todociber.appbolsadevalores.OrdenesCasa.WS.POST_EnviarMensaje;
 import com.todociber.appbolsadevalores.R;
 import com.todociber.appbolsadevalores.db.ClienteDao;
@@ -40,6 +41,8 @@ public class DetalleMensajes extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public ProgressDialog loading;
+    public Cursor cursorDetalleOrden, cursorCliente,cursorMensajes;
     int posicionCursorCasa;
     String tipoOrden ="", estadoOrden= "";
     private SQLiteDatabase db;
@@ -47,14 +50,11 @@ public class DetalleMensajes extends Fragment {
     private DaoSession daoSession;
     private TokenPushDao tokenPushDao;
     private ClienteDao clienteDao;
-    public ProgressDialog loading;
     private OrdenesDao ordenesDao;
     private Context context;
     private String idOrden,motivo;
-
     private MensajesDao mensajesDao;
     private AdapterMensajes adapterMensajes;
-    public Cursor cursorDetalleOrden, cursorCliente,cursorMensajes;
     // TODO: Rename and change types of parameters
     private int mParam1;
     private String mParam2;
@@ -209,6 +209,9 @@ public class DetalleMensajes extends Fragment {
             POST_EnviarMensaje post_enviarMensaje = new POST_EnviarMensaje(cursorCliente.getString(5),cursorCliente.getString(1),
                     idOrden,textoComentaio,cursorCliente.getString(2),cursorCliente.getString(3),cursorCliente.getString(9),getActivity());
             ErrorCode = post_enviarMensaje.error;
+            String idCliente = cursorCliente.getString(5);
+            String tokenSession = cursorCliente.getString(9);
+            GetOrdenesByCasa getOrdenesByCasa = new GetOrdenesByCasa(context,tokenSession,idCliente,mParam2);
             return null;
         }
 
@@ -231,7 +234,8 @@ public class DetalleMensajes extends Fragment {
                                     adapterMensajes = new AdapterMensajes(getActivity(),cursorMensajes,cursorCliente.getString(1));
                                     listadoMensajes.setAdapter(adapterMensajes);
                                 }
-                                dialog.dismiss();
+                                txtMensaje.setText("");
+
                             }
                         }).create().show();
             }else  {

@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 import com.todociber.appbolsadevalores.OrdenesCasa.EditarOrden;
 import com.todociber.appbolsadevalores.OrdenesCasa.HistorialOrden;
-import com.todociber.appbolsadevalores.OrdenesCasa.OrdenesPorCasa;
 import com.todociber.appbolsadevalores.OrdenesCasa.WS.GetOrdenesByCasa;
 import com.todociber.appbolsadevalores.OrdenesCasa.WS.PutCancelarOrden;
 import com.todociber.appbolsadevalores.OrdenesCasa.WS.PutEjecutarOrden;
@@ -46,6 +45,8 @@ public class DetalleOrden extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public ProgressDialog loading;
+    public Cursor cursorDetalleOrden, CursorCliente;
     int posicionCursorCasa;
     String tipoOrden ="", estadoOrden= "";
     private SQLiteDatabase db;
@@ -53,12 +54,10 @@ public class DetalleOrden extends Fragment {
     private DaoSession daoSession;
     private TokenPushDao tokenPushDao;
     private ClienteDao clienteDao;
-    public ProgressDialog loading;
     private OrdenesDao ordenesDao;
     private Context context;
     private String idOrden,motivo,idOrdenPadre;
     private GetOrdenesByCasa getOrdenesByCasa;
-    public Cursor cursorDetalleOrden, CursorCliente;
     private TextView NombreCasaCorredora,txtCorrelativo,txtFechaDeVigencia,
             txtAgenteCorredor,txtTipoDeOrden,txtTituloNombre,txtValorMinimo,
             txtValorMaximo,txtMontoDeInversion,txtTasaDeInversion,txtComision,
@@ -346,6 +345,72 @@ public class DetalleOrden extends Fragment {
         mListener = null;
     }
 
+    private void actualizarPantalla(){
+        cursorDetalleOrden = db.query(ordenesDao.getTablename(),ordenesDao.getAllColumns(),null,null,null,null,null);
+        if(cursorDetalleOrden.moveToPosition(posicionCursorCasa)){
+            NombreCasaCorredora.setText(cursorDetalleOrden.getString(12));
+            txtCorrelativo.setText(cursorDetalleOrden.getString(2));
+            txtFechaDeVigencia.setText(cursorDetalleOrden.getString(3));
+            txtAgenteCorredor.setText(cursorDetalleOrden.getString(4));
+            if(cursorDetalleOrden.getString(5).equals("1")){
+                tipoOrden = "Compra";
+            }else if(cursorDetalleOrden.getString(5).equals("2")){
+                tipoOrden = "Venta";
+            }
+            txtTipoDeOrden.setText(tipoOrden);
+            txtTituloNombre.setText(cursorDetalleOrden.getString(8));
+            txtValorMinimo.setText(cursorDetalleOrden.getString(10));
+            txtValorMaximo.setText(cursorDetalleOrden.getString(11));
+            txtMontoDeInversion.setText(cursorDetalleOrden.getString(15));
+            txtTasaDeInversion.setText(cursorDetalleOrden.getString(16));
+            txtComision.setText(cursorDetalleOrden.getString(17));
+            txtCuentaCedeval.setText(cursorDetalleOrden.getString(18));
+            txtEmisor.setText(cursorDetalleOrden.getString(19));
+            txtTipoMercado.setText(cursorDetalleOrden.getString(20));
+            txtEstadoOrden.setText(setearEstadoOrden(cursorDetalleOrden.getString(7)));
+
+            idOrden = cursorDetalleOrden.getString(1);
+            idOrdenPadre =cursorDetalleOrden.getString(6);
+            if(cursorDetalleOrden.getString(7).equals("1") ||
+                    cursorDetalleOrden.getString(7).equals("3")||
+                    cursorDetalleOrden.getString(7).equals("4")||
+                    cursorDetalleOrden.getString(7).equals("6")||
+                    cursorDetalleOrden.getString(7).equals("5")||
+                    cursorDetalleOrden.getString(7).equals("7")||
+                    cursorDetalleOrden.getString(7).equals("8")){
+
+                if (cursorDetalleOrden.getString(7).equals("1")){
+                    bannerBotones.setVisibility(View.VISIBLE);
+                    btnEjecutar.setVisibility(View.GONE);
+                    btnCancelar.setVisibility(View.GONE);
+                }else{
+                    bannerBotones.setVisibility(View.GONE);
+                }
+
+            }
+
+            if(cursorDetalleOrden.getString(6).equals("null")){
+                BannerHistorial.setVisibility(View.GONE);
+            }
+
+
+
+        }else{
+            new AlertDialog.Builder(context)
+                    .setTitle("Error")
+                    .setMessage("Error en obtencion de datos")
+                    .setCancelable(false)
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            getActivity().finish();
+                        }
+                    }).create().show();
+        }
+    }
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -360,7 +425,6 @@ public class DetalleOrden extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
 
     private class putEjecutarTask extends AsyncTask<Void, Void, Void> {
         int ErrorCode=1;
@@ -390,6 +454,9 @@ public class DetalleOrden extends Fragment {
             PutEjecutarOrden putEjecutarOrden = new PutEjecutarOrden(CursorCliente.getString(9),context,idOrden,CursorCliente.getString(2),CursorCliente.getString(3),CursorCliente.getString(5));
             putEjecutarOrden.ejecutarOrden();
             ErrorCode = putEjecutarOrden.error;
+            String idCliente = CursorCliente.getString(5);
+            String tokenSession = CursorCliente.getString(9);
+            GetOrdenesByCasa getOrdenesByCasa = new GetOrdenesByCasa(context,tokenSession,idCliente,mParam2);
             return null;
         }
 
@@ -408,13 +475,8 @@ public class DetalleOrden extends Fragment {
                         .setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                actualizarPantalla();
 
-
-                                Intent a = new Intent(getActivity(),OrdenesPorCasa.class);
-                                a.putExtra("idCasa",mParam2);
-                                startActivity(a);
-                                getActivity().finish();
-                                dialog.dismiss();
                             }
                         }).create().show();
 
@@ -436,7 +498,6 @@ public class DetalleOrden extends Fragment {
         }
 
     }
-
 
     private class putCancelar extends AsyncTask<Void, Void, Void> {
         int ErrorCode=1;
@@ -465,6 +526,9 @@ public class DetalleOrden extends Fragment {
         protected Void doInBackground(Void... arg0) {
             PutCancelarOrden putCancelarOrden = new PutCancelarOrden(CursorCliente.getString(9),context,idOrden,CursorCliente.getString(2),CursorCliente.getString(3),CursorCliente.getString(5),motivo,CursorCliente.getString(1));
             putCancelarOrden.EjecutarCancelacion();
+            String idCliente = CursorCliente.getString(5);
+            String tokenSession = CursorCliente.getString(9);
+            GetOrdenesByCasa getOrdenesByCasa = new GetOrdenesByCasa(context,tokenSession,idCliente,mParam2);
             ErrorCode = putCancelarOrden.error;
             return null;
         }
@@ -485,11 +549,9 @@ public class DetalleOrden extends Fragment {
                         .setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                actualizarPantalla();
                                 dialog.dismiss();
-                                Intent a = new Intent(getActivity(),OrdenesPorCasa.class);
-                                a.putExtra("idCasa",mParam2);
-                                startActivity(a);
-                                getActivity().finish();
+
                             }
                         }).create().show();
             }else  {
@@ -509,53 +571,4 @@ public class DetalleOrden extends Fragment {
         }
 
     }
-
-
-
-
-    private class getOrdenes extends AsyncTask<Void, Void, Void> {
-        int ErrorCode;
-        int a ;
-        public getOrdenes(int a) {
-            this.a=a;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            if(a==0){
-                try {
-                    loading = new ProgressDialog(context);
-                    loading.setMessage("Cargando");
-                    loading.setCancelable(false);
-                    loading.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-        }
-
-        @Override
-        protected Void doInBackground(Void... arg0) {
-            CursorCliente.moveToFirst();
-            getOrdenesByCasa = new GetOrdenesByCasa(context,CursorCliente.getString(9),CursorCliente.getString(5),String.valueOf(posicionCursorCasa));
-            ErrorCode = getOrdenesByCasa.erroCode;
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result) {
-
-
-
-                loading.dismiss();
-
-
-
-        }
-
-    }
-
-
 }

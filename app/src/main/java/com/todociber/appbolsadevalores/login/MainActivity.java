@@ -23,6 +23,9 @@ import com.todociber.appbolsadevalores.db.TokenPushDao;
 import com.todociber.appbolsadevalores.login.WS.POSTLogin;
 
 public class MainActivity extends AppCompatActivity {
+    public ProgressDialog loading;
+    public String Email, Password, TokenPushG;
+    public Context context;
     Button BtnIniciarSession;
     Cursor cursorTokenPush, cursorUsuarioLogueado;
     EditText TxtEmail,TxtPassword;
@@ -31,9 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private DaoSession daoSession;
     private TokenPushDao tokenPushDao;
     private ClienteDao clienteDao;
-    public ProgressDialog loading;
-    public String Email, Password, TokenPushG;
-    public Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +106,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void startNewActivity(Context context, String packageName) {
+
+
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(packageName);
+        if (intent != null) {
+            // We found the activity now start the activity
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            new AlertDialog.Builder(context)
+                    .setTitle("Error")
+                    .setMessage("Usuario o Contraseña incorrectos")
+                    .setCancelable(false)
+                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create().show();
+        }
+    }
+
     private class PostLogin extends AsyncTask<Void, Void, Void> {
         int ErrorCode;
         public PostLogin() {
@@ -142,7 +164,20 @@ public class MainActivity extends AppCompatActivity {
                 Intent a = new Intent(context, MenuPrincipal.class);
                 startActivity(a);
                 finish();
-            }else  {
+            }else if(ErrorCode==8){
+                startNewActivity(context,"com.elevenpaths.android.latch");
+            }else if(ErrorCode==4){
+                new AlertDialog.Builder(context)
+                        .setTitle("Error")
+                        .setMessage("No cuenta con afiliaciones Vigentes")
+                        .setCancelable(false)
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+            }else {
                   new AlertDialog.Builder(context)
                         .setTitle("Error")
                         .setMessage("Usuario o Contraseña incorrectos")
