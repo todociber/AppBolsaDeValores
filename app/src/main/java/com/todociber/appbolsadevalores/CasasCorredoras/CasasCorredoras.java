@@ -28,6 +28,7 @@ import com.todociber.appbolsadevalores.db.ClienteDao;
 import com.todociber.appbolsadevalores.db.DaoMaster;
 import com.todociber.appbolsadevalores.db.DaoSession;
 import com.todociber.appbolsadevalores.db.TokenPushDao;
+import com.todociber.appbolsadevalores.login.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -221,15 +222,21 @@ public class CasasCorredoras extends Fragment {
                 loading.dismiss();
             }
 
-            if(ErrorCode==0){
+            if(ErrorCode==0) {
                 CasasCorredorasDao casasCorredorasDao = daoSession.getCasasCorredorasDao();
-                CursorCasas = db.query(casasCorredorasDao.getTablename(),casasCorredorasDao.getAllColumns(),null,null,null,null,null);
+                CursorCasas = db.query(casasCorredorasDao.getTablename(), casasCorredorasDao.getAllColumns(), null, null, null, null, null);
 
-                if(CursorCasas.moveToFirst()){
-                    CasasAdapter = new ListadoCasasAdapter(context,CursorCasas);
+                if (CursorCasas.moveToFirst()) {
+                    CasasAdapter = new ListadoCasasAdapter(context, CursorCasas);
                     ListadoCasas.setAdapter(CasasAdapter);
                     ListadoCasas.setVerticalScrollBarEnabled(false);
                 }
+            }else if(ErrorCode ==2){
+                clienteDao.deleteAll();
+                Intent a = new Intent(context, MainActivity.class);
+                startActivity(a);
+                getActivity().finish();
+
             }else  {
                 new AlertDialog.Builder(context)
                         .setTitle("Error")

@@ -58,7 +58,14 @@ public class AdapterAfiliaciones extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
         cursor.moveToPosition(position);
-        String NombreOrden = cursor.getString(1)+"\n"+cursor.getString(2)+"\n"+cursor.getString(3);
+        String estado ;
+        if(cursor.getString(3).equals("5")){
+            estado ="En revision";
+        }else{
+            estado = "En Proceso";
+        }
+        String NombreOrden = "Numero de Afiliacion: "+cursor.getString(1)+"\n"
+                +"Casa: "+"\n"+cursor.getString(2)+"\n"+"Estado: "+estado;
         holder.text.setText(NombreOrden);
         return view;
     }
