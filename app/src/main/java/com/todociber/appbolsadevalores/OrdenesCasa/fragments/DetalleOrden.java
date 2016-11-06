@@ -469,7 +469,7 @@ public class DetalleOrden extends Fragment {
 
             if(ErrorCode==0){
                 new AlertDialog.Builder(context)
-                        .setTitle("Error")
+                        .setTitle("Exito")
                         .setMessage("Orden Ejecutada con exito")
                         .setCancelable(false)
                         .setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
@@ -543,7 +543,7 @@ public class DetalleOrden extends Fragment {
             if(ErrorCode==0){
 
                 new AlertDialog.Builder(context)
-                        .setTitle("Error")
+                        .setTitle("Exito")
                         .setMessage("Orden Cancelada exitosamente")
                         .setCancelable(false)
                         .setPositiveButton("aceptar", new DialogInterface.OnClickListener() {

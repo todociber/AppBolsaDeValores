@@ -361,7 +361,7 @@ public class EnviarOrdenEditada extends AppCompatActivity {
             loading.dismiss();
             if(ErrorCode1==0){
                 new AlertDialog.Builder(context)
-                        .setTitle("Error")
+                        .setTitle("Exito")
                         .setMessage("Orden editada con exito")
                         .setCancelable(false)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {

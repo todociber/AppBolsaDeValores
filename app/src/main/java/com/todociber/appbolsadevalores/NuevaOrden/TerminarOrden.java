@@ -374,7 +374,7 @@ public class TerminarOrden extends AppCompatActivity {
             loading.dismiss();
             if(ErrorCode1==0){
                 new AlertDialog.Builder(context)
-                        .setTitle("Error")
+                        .setTitle("Exito")
                         .setMessage("Orden Creada con exito")
                         .setCancelable(false)
                         .setPositiveButton("ok", new DialogInterface.OnClickListener() {

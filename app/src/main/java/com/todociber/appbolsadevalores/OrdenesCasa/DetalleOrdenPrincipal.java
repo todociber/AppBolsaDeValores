@@ -28,6 +28,8 @@ import com.todociber.appbolsadevalores.db.OrdenesDao;
 import com.todociber.appbolsadevalores.db.TokenPushDao;
 
 public class DetalleOrdenPrincipal extends AppCompatActivity {
+    public ProgressDialog loading;
+    public Cursor cursorDetalleOrden, CursorCliente;
     int posicionCursorCasa;
     String tipoOrden ="", estadoOrden= "";
     private SQLiteDatabase db;
@@ -35,12 +37,9 @@ public class DetalleOrdenPrincipal extends AppCompatActivity {
     private DaoSession daoSession;
     private TokenPushDao tokenPushDao;
     private ClienteDao clienteDao;
-    public ProgressDialog loading;
     private OrdenesDao ordenesDao;
     private Context context;
     private String idOrden,motivo;
-
-    public Cursor cursorDetalleOrden, CursorCliente;
     private TextView NombreCasaCorredora,txtCorrelativo,txtFechaDeVigencia,
             txtAgenteCorredor,txtTipoDeOrden,txtTituloNombre,txtValorMinimo,
             txtValorMaximo,txtMontoDeInversion,txtTasaDeInversion,txtComision,
@@ -263,7 +262,7 @@ public class DetalleOrdenPrincipal extends AppCompatActivity {
 
             if(ErrorCode==0){
                 new AlertDialog.Builder(context)
-                        .setTitle("Error")
+                        .setTitle("Exito")
                         .setMessage("Orden Ejecutada con exito")
                         .setCancelable(false)
                         .setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
@@ -334,7 +333,7 @@ public class DetalleOrdenPrincipal extends AppCompatActivity {
             if(ErrorCode==0){
 
                 new AlertDialog.Builder(context)
-                        .setTitle("Error")
+                        .setTitle("Exito")
                         .setMessage("Orden Cancelada exitosamente")
                         .setCancelable(false)
                         .setPositiveButton("aceptar", new DialogInterface.OnClickListener() {
