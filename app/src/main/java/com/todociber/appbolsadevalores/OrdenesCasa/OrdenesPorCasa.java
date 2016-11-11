@@ -28,12 +28,6 @@ import com.todociber.appbolsadevalores.db.TokenPushDao;
 
 public class OrdenesPorCasa extends AppCompatActivity {
     public String idCasa, posicionCasa;
-    private SQLiteDatabase db;
-    private DaoMaster daoMaster;
-    private DaoSession daoSession;
-    private TokenPushDao tokenPushDao;
-    private ClienteDao clienteDao;
-    private OrdenesDao ordenesDao;
     public Context context;
     public ListView listadoOrdenes;
     public ProgressDialog loading;
@@ -41,6 +35,12 @@ public class OrdenesPorCasa extends AppCompatActivity {
     public String idCliente, tokenSession;
     public GetOrdenesByCasa getOrdenesByCasa;
     public AdapterOrdenes adapterOrdenes;
+    private SQLiteDatabase db;
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
+    private TokenPushDao tokenPushDao;
+    private ClienteDao clienteDao;
+    private OrdenesDao ordenesDao;
     private SwipeRefreshLayout swipeContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +129,7 @@ public class OrdenesPorCasa extends AppCompatActivity {
                     loading.setMessage("Cargando");
                     loading.setCancelable(false);
                     loading.show();
+                    ordenesDao.deleteAll();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

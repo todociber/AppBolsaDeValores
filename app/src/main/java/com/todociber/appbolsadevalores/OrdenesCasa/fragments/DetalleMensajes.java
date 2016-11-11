@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.todociber.appbolsadevalores.OrdenesCasa.Adapter.AdapterMensajes;
@@ -63,7 +64,8 @@ public class DetalleMensajes extends Fragment {
     private CardView btnEnviarMensaje;
     private  String textoComentaio;
     private OnFragmentInteractionListener mListener;
-
+    private LinearLayout linearLayout;
+    private int EstadoOrden;
     public DetalleMensajes() {
         // Required empty public constructor
     }
@@ -104,7 +106,7 @@ public class DetalleMensajes extends Fragment {
         listadoMensajes = (ListView) rootView.findViewById(R.id.ListadoMensajes);
         txtMensaje = (EditText) rootView.findViewById(R.id.txtMensajeEdit);
         btnEnviarMensaje =(CardView) rootView.findViewById(R.id.btnEnviarMensaje);
-
+        linearLayout = (LinearLayout)rootView.findViewById(R.id.linearLayout);
 
 
 
@@ -119,6 +121,12 @@ public class DetalleMensajes extends Fragment {
         clienteDao = daoSession.getClienteDao();
         cursorDetalleOrden = db.query(ordenesDao.getTablename(),ordenesDao.getAllColumns(),null,null,null,null,null);
         if(cursorDetalleOrden.moveToPosition(posicionCursorCasa)){
+
+            EstadoOrden = Integer.parseInt(cursorDetalleOrden.getString(7));
+            if(EstadoOrden ==3||EstadoOrden ==4||EstadoOrden ==6||EstadoOrden ==7||EstadoOrden ==8){
+                linearLayout.setVisibility(View.GONE);
+            }
+
             cursorMensajes = db.query(mensajesDao.getTablename(),mensajesDao.getAllColumns(),"ID_ORDEN="+cursorDetalleOrden.getString(1),null,null,null,null);
             cursorCliente = db.query(clienteDao.getTablename(),clienteDao.getAllColumns(),null,null,null,null,null);
             if(cursorMensajes.moveToFirst()&&cursorCliente.moveToFirst()){

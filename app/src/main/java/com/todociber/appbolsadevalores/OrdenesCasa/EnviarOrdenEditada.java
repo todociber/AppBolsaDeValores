@@ -134,7 +134,7 @@ public class EnviarOrdenEditada extends AppCompatActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
                 Calendar cMax = Calendar.getInstance();
                 cMax.set(Calendar.DAY_OF_MONTH, mDay+1);
-                cMax.set(Calendar.MONTH, mMonth+3);
+                cMax.set(Calendar.MONTH, mMonth+2);
                 cMax.set(Calendar.YEAR, mYear);
                 cMin.set(Calendar.DAY_OF_MONTH, mDay+3);
                 cMin.set(Calendar.MONTH, mMonth);
@@ -180,7 +180,7 @@ public class EnviarOrdenEditada extends AppCompatActivity {
                 mDay = c.get(Calendar.DAY_OF_MONTH);
                 Calendar cMax = Calendar.getInstance();
                 cMax.set(Calendar.DAY_OF_MONTH, mDay+1);
-                cMax.set(Calendar.MONTH, mMonth+3);
+                cMax.set(Calendar.MONTH, mMonth+2);
                 cMax.set(Calendar.YEAR, mYear);
                 cMin.set(Calendar.DAY_OF_MONTH, mDay+3);
                 cMin.set(Calendar.MONTH, mMonth);
