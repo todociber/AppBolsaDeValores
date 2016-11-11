@@ -24,6 +24,8 @@ import com.todociber.appbolsadevalores.db.TokenPushDao;
 
 public class HistorialOrden extends AppCompatActivity {
     public ProgressDialog loading;
+    String idOrden;
+    adapterOrdenesPadre AdapterOrdenesPadre;
     private Context context;
     private SQLiteDatabase db;
     private DaoMaster daoMaster;
@@ -32,8 +34,6 @@ public class HistorialOrden extends AppCompatActivity {
     private ClienteDao clienteDao;
     private Cursor cursorCliente, cursorOrdenesPadre;
     private OrdenesPadreDao ordenesPadreDao;
-    String idOrden;
-    adapterOrdenesPadre AdapterOrdenesPadre;
     private ListView listadoOrdenesPadre;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class HistorialOrden extends AppCompatActivity {
                 loading.dismiss();
 
             if(ErrorCode==0){
-                cursorOrdenesPadre = db.query(ordenesPadreDao.getTablename(),ordenesPadreDao.getAllColumns(),null,null,null,null,"ID_ORDEN DESC");
+                cursorOrdenesPadre = db.query(ordenesPadreDao.getTablename(),ordenesPadreDao.getAllColumns(),null,null,null,null,null);
 
                 if(cursorOrdenesPadre.moveToFirst()){
                    AdapterOrdenesPadre = new adapterOrdenesPadre(context,cursorOrdenesPadre);
@@ -126,6 +126,7 @@ public class HistorialOrden extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
+                                finish();
                             }
                         }).create().show();
             }
